@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lavagna dei counter</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0c0c0f">
+<script>try{const t=(JSON.parse(localStorage.getItem("counter-st3")||"{}")||{}).theme;if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<header class="topdock"><div class="appbar" data-appbar></div><div class="scorebar" id="scorebar" hidden><div class="seg" data-pills="score" role="group" aria-label="Punteggio"></div><div class="livebar" data-live></div></div></header>
+<main>
+  <div class="view" id="view-modulo">
+    <details class="acc" data-acc="1" open>
+      <summary><span class="num">1</span><span class="st"><b>Moduli</b></span></summary>
+      <div class="accb">
+        <div class="homehd"><button class="swap" data-act="statswap" aria-label="Scambia casa e ospite">⇄ Scambia</button><span class="note">A sinistra chi gioca in casa, a destra l'ospite.</span></div>
+        <div class="selrow" id="selrow">
+          <div class="selbox"><span class="label" data-sidelab="mine">Tu</span><select id="mine" aria-label="Il tuo modulo"></select>
+            <label class="ovrin"><span>OVR squadra</span><input data-ovr="mine" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="–" aria-label="OVR della tua squadra"></label></div>
+          <div class="selbox"><span class="label" data-sidelab="opp">Avversario</span><select id="opp" aria-label="Modulo avversario"></select>
+            <label class="ovrin"><span>OVR squadra</span><input data-ovr="opp" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="–" aria-label="OVR della squadra avversaria"></label></div>
+        </div>
+        <div class="oddsbox">
+          <span class="label">Probabilità a inizio partita</span>
+          <div class="oddsrow">
+            <label><span data-oddslab="h">Casa</span><input data-odds="h" type="text" inputmode="numeric" maxlength="3" autocomplete="off" placeholder="–" enterkeyhint="next" aria-label="Probabilità vittoria casa"><i>%</i></label>
+            <label><span>Pareggio</span><input data-odds="d" type="text" inputmode="numeric" maxlength="3" autocomplete="off" placeholder="–" enterkeyhint="next" aria-label="Probabilità pareggio"><i>%</i></label>
+            <label><span data-oddslab="a">Ospite</span><input data-odds="a" type="text" inputmode="numeric" maxlength="3" autocomplete="off" placeholder="–" enterkeyhint="done" aria-label="Probabilità vittoria ospite"><i>%</i></label>
+          </div>
+        </div>
+        <div data-ovrnote></div>
+        <div class="card" style="display:flex;flex-direction:column;gap:8px"><span class="label">Il suo schieramento</span><span class="hint">Tocca: ipotesi · Tieni premuto: sposta</span><div data-opp-pitch></div></div>
+        <div class="card mods"><span class="label" id="cmp-title"></span><div class="mrows" id="cmp"></div>
+          <p class="legrow"><span class="lg g">100</span> <span class="lg o">90–95</span> <span class="lg r">sotto 90</span> <span class="hint">Tocca un modulo per schierarlo</span></p>
+          <p class="note"><b>Preparazione</b>: quanto è adatto il modulo contro un avversario di cui non conosci le scelte (100 = il meglio possibile). Il tuo schieramento cambia da solo. Il confronto non usa le tue stelle.</p></div>
+        <div class="card" style="display:flex;flex-direction:column;gap:8px"><span class="label">Il tuo schieramento</span><span class="hint">Tocca: stelle e istruzione · Tieni premuto: sposta</span><div data-my-pitch></div><div class="xp" data-lv></div></div>
+      </div>
+    </details>
+
+    <details class="acc xp" data-acc="2">
+      <summary><span class="num">2</span><span class="st"><b>Cosa rivela il suo modulo</b><small data-sum="2"></small></span></summary>
+      <div class="accb"><div class="facts" id="facts"></div></div>
+    </details>
+
+    <details class="acc xp" data-acc="4">
+      <summary><span class="num">4</span><span class="st"><b>Le tue scelte</b><small data-sum="4"></small></span></summary>
+      <div class="accb">
+        <div class="card sum" id="summary"></div>
+        <div id="mycards" style="display:flex;flex-direction:column;gap:10px"></div>
+        <details class="sub">
+          <summary><b>Marcatura</b><small data-sum="mark"></small></summary>
+          <div class="subb"><div data-mark></div><p class="note">A zona ognuno copre il suo spazio. A uomo un tuo giocatore segue un avversario: lui tocca molti meno palloni, ma la zona del marcatore resta più scoperta. Una sola. Stima: il marcato fa metà danni, il tuo marcatore rende la metà.</p></div>
+        </details>
+        <details class="sub">
+          <summary><b>Ritmo e perdita di tempo</b><small data-sum="extra"></small></summary>
+          <div class="subb"><div data-extra></div></div>
+        </details>
+        <details class="sub">
+          <summary><b>Cosa resta scoperto</b><small data-sum="holes"></small></summary>
+          <div class="subb"><div data-holes></div></div>
+        </details>
+        <details class="sub">
+          <summary><b>Calci d'angolo</b><small>in pareggio</small></summary>
+          <div class="subb"><div data-corners></div></div>
+        </details>
+        <details class="sub">
+          <summary><b>Come leggere</b><small>etichette e voti</small></summary>
+          <div class="subb">
+            <div class="legend">
+              <div><span class="tag good">Conviene</span>batte molto più di quanto rischia</div>
+              <div><span class="tag warn">Dipende</span>batte, ma rischia anche</div>
+              <div><span class="tag bad">Evita</span>rischia più di quanto batte, o non ha niente da fermare</div>
+              <div><span class="chip d fa">quasi certa</span><span class="chip d fm">probabile</span><span class="chip d fb">ipotesi</span>relazioni dedotte, dalla più alla meno sicura: pesano 0,75 · 0,5 · 0,3 di una scritta nel gioco</div>
+            </div>
+            <p class="note">Voto di ogni istruzione da 0 a 100: 50 neutra, sopra conviene, sotto rischia. Le scelte sono coordinate: ogni posto tiene conto di cosa coprono gli altri. Le percentuali sono la probabilità che l'avversario usi quella voce; un'ipotesi o un indizio la rendono certa. Valori arrotondati a 5.</p>
+            <div class="bar"><button class="pill" id="only" data-act="only" aria-pressed="false">Solo le consigliate nelle schede</button><button class="link" data-act="resetpicks">Ripristina le consigliate</button></div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <section class="hero" aria-labelledby="hero-t">
+      <header class="hero-h">
+        <h2 id="hero-t">Formazione da schierare</h2>
+        <small data-sum="5"></small>
+      </header>
+      <div data-lineup3="best"></div>
+      <div data-tips></div>
+        <div class="bar"><button class="link" data-act="copy">Copia come testo</button></div>
+        <textarea class="copybox" id="copybox" readonly hidden aria-label="Formazione come testo"></textarea>
+    </section>
+
+  </div>
+
+  <div class="view" id="view-partita" hidden>
+    <h2 class="ptitle">Cosa noti dell'avversario</h2>
+    <details class="sub card-like" open>
+      <summary><b>Statistiche</b><small data-sum="stats"></small></summary>
+      <div class="subb">
+        <div class="steppers" data-steppers></div>
+        <div class="bar"><button class="cta" data-act="readstats">Leggi le statistiche</button><button class="link" data-act="statreset">Nuova partita</button></div>
+        <p class="note" id="stats-msg">Minuto in alto, totali di Stats con + e −, poi «Leggi».</p>
+        <div data-statlast></div>
+      </div>
+    </details>
+    <details class="sub card-like" open><summary><b>Indizi</b><small data-sum="sig"></small></summary><div class="subb"><div class="bar"><span></span><button class="link" data-act="sigreset" id="sigreset" hidden>Azzera</button></div><div class="sigs" data-sigs></div></div>
+    </details>
+    <details class="sub card-like yelbox" open><summary><b>Cartellini</b><small data-sum="yel"></small></summary><div class="subb"><div data-yel></div></div></details>
+    <section class="hero" id="p-lineup" aria-labelledby="cambio-t">
+      <header class="hero-h"><h2 id="cambio-t">Cambio tattico</h2><small>Cosa cambiare ora, dopo quello che hai segnato</small></header>
+      <p class="readmsg" id="p-readmsg" hidden></p>
+      <div data-lineup3="cmp"></div>
+      <div class="bar"><span class="note">com'era → com'è ora</span><button class="link" data-act="copy">Copia come testo</button></div>
+    </section>
+    <span class="label" style="margin-top:4px">Altro</span>
+    <details class="sub card-like"><summary><b>Sue tattiche di squadra</b><small data-sum="tg"></small></summary><div class="subb"><div class="bar"><span class="note">Tocca una voce e scegli cosa pensi che usi: diventa certa nel calcolo.</span><button class="link" data-act="tgreset" data-tgreset hidden>Azzera</button></div><div data-tg></div></div></details>
+    <details class="sub card-like"><summary><b>Se noti questo, cambia</b><small>cambi pronti per ogni indizio</small></summary><div class="subb"><div id="p-if"></div></div></details>
+    <details class="sub card-like"><summary><b>Con questo punteggio</b><small>consigli generali</small></summary><div class="subb"><ul class="watch" id="p-score"></ul></div></details>
+    <details class="sub card-like xp"><summary><b>Cosa resta scoperto</b><small data-sum="holes-sit"></small></summary><div class="subb"><div data-holes-sit></div></div></details>
+    <details class="sub card-like xp"><summary><b>Calci d'angolo</b><small>nella situazione scelta</small></summary><div class="subb"><div data-corners-sit></div></div></details>
+    <section class="card sendbox" id="sendbox" aria-labelledby="send-t">
+      <span class="label" id="send-t">Aiuta a migliorare la Lavagna</span>
+      <div class="bar"><button class="pill" data-act="sendfinal" aria-pressed="false">La partita è finita</button></div>
+      <p class="note">Premi INVIA in alto quando hai impostato moduli, giocatori con le stelle, tattica e statistiche. Invio volontario e anonimo: moduli, OVR, probabilità, punteggio, stelle e ruoli, tattica, indizi e statistiche. Nessun nome né dato personale. Serve internet. Puoi inviare più volte nella stessa partita: ogni invio è una nuova fotografia.</p>
+    </section>
+    <h2 id="p-title" hidden></h2>
+  </div>
+
+  <div class="view" id="view-counter" hidden>
+    <div class="card" style="display:flex;flex-direction:column;gap:10px">
+      <div class="selrow">
+        <label class="selbox"><span class="label">Ruolo</span><select id="xrole" aria-label="Ruolo"></select></label>
+        <label class="selbox"><span class="label">Istruzione</span><select id="xinstr" aria-label="Istruzione"></select></label>
+      </div>
+      <h2 id="xname"></h2>
+      <p class="desc" id="xdesc"></p>
+    </div>
+    <div class="cols" id="xcols"></div>
+    <p class="note">Bordo pieno: scritta nel gioco. Dedotta dal testo: <span class="chip d fa">quasi certa</span> <span class="chip d fm">probabile</span> <span class="chip d fb">ipotesi</span>. Tocca una voce per aprirla.</p>
+    <details class="sub card-like">
+      <summary><b>Matrice per reparto</b><small>le tue contro le sue</small></summary>
+      <div class="subb">
+        <div class="selrow">
+          <label class="selbox"><span class="label">Le tue</span><select id="mxa" aria-label="Il tuo reparto"></select></label>
+          <label class="selbox"><span class="label">Le sue</span><select id="mxb" aria-label="Il suo reparto"></select></label>
+        </div>
+        <div class="mxwrap"><table class="mx" id="mx"></table></div>
+        <div class="legend" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+          <div><span class="mxc B">B</span>la tua batte la sua</div><div><span class="mxc S">S</span>la tua soffre la sua</div>
+          <div><span class="mxc A">A</span>la tua annulla la sua</div><div><span class="mxc I">I</span>la tua è inutile</div></div>
+      </div>
+    </details>
+  </div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="abpop" id="abpop" role="dialog" aria-label="Cosa vogliono dire i numeri in alto" hidden></div>
+<div class="intro" id="intro" hidden>
+  <div class="introbox">
+    <div class="islide" data-slide="0"><span class="inum">1</span><h2>Scegli i moduli</h2><p>Dell'avversario vedi solo il modulo: sceglilo, insieme al tuo. Se pensi di sapere cosa fa un suo giocatore, toccalo sul campo e scegli.</p></div>
+    <div class="islide" data-slide="1" hidden><span class="inum">2</span><h2>Guarda la formazione</h2><p>«Formazione da schierare» ti dà il modulo con le istruzioni già assegnate e tre cose da sapere. Copiala nel gioco.</p></div>
+    <div class="islide" data-slide="2" hidden><span class="inum">3</span><h2>In partita, segna cosa vedi</h2><p>Nella scheda Partita scegli il punteggio dalla barra in basso e segna indizi e statistiche: la formazione si ricalcola e ti avviso di cosa cambiare, anche con una vibrazione. Lo schermo resta acceso.</p></div>
+    <div class="ibar"><button class="link" data-act="introskip">Salta</button><span class="idots"><i></i><i></i><i></i></span><button class="cta" data-act="intronext">Avanti</button></div>
+  </div>
+</div>
+<div class="guide" id="guide" role="dialog" aria-modal="true" aria-labelledby="guide-t" hidden>
+  <div class="gwrap">
+    <header class="ghead"><h2 id="guide-t">⏱️ Quando usare la Lavagna</h2><button class="gx" data-act="guideclose" aria-label="Chiudi la guida">✕</button></header>
+    <p class="glead">Poche volte, nei momenti giusti. <b>Ogni 10 minuti è troppo</b>: i numeri sono pochi e cambiano a caso. La Lavagna lo sa già: se l'ultima lettura è di meno di 15 minuti prima, la confronta con quella precedente.</p>
+
+    <section class="gclock" aria-label="La partita minuto per minuto">
+      <h3><span class="ge" aria-hidden="true">🏟️</span>La partita in un colpo d'occhio</h3>
+      <div class="gtrack" aria-hidden="true">
+        <div class="gbar"></div><div class="ghalf"></div>
+        <span class="gm" style="left:0%"><i>📋</i><s></s><b>Prima</b></span>
+        <span class="gm" style="left:30.5%"><i>📊</i><s></s><b>25'–30'</b></span>
+        <span class="gm key" style="left:50%"><i>☕</i><s></s><b>45'</b></span>
+        <span class="gm" style="left:74%"><i>🔄</i><s></s><b>65'–70'</b></span>
+        <span class="gm off" style="left:100%"><i>🚫</i><s></s><b>75'+</b></span>
+      </div>
+      <p class="gcap">Nel tratto verde ha senso leggere le statistiche; il pallino giallo è la lettura più importante. Nel tratto grigio non serve più.</p>
+    </section>
+
+    <section class="gsec">
+      <h3><span class="ge" aria-hidden="true">📋</span>Prima del fischio d'inizio</h3>
+      <p>È il momento in cui la Lavagna rende di più. Fallo con calma.</p>
+      <ul class="glist">
+        <li><span aria-hidden="true">⚽</span><div>Il tuo modulo e il suo<small>Prepara → Moduli</small></div></li>
+        <li><span aria-hidden="true">💪</span><div>L'OVR delle due squadre<small>accanto ai moduli</small></div></li>
+        <li><span aria-hidden="true">🎲</span><div>Le probabilità di vittoria e se giochi in casa o fuori<small>sotto i moduli</small></div></li>
+        <li><span aria-hidden="true">⭐</span><div>Le stelle dei suoi giocatori più forti<small>Prepara → Moduli, tocca il giocatore sul campo</small></div></li>
+      </ul>
+    </section>
+
+    <section class="gsec">
+      <h3><span class="ge" aria-hidden="true">📊</span>Statistiche: due o tre volte</h3>
+      <p>Scheda Partita → imposta il minuto in alto, copia i totali in Statistiche, poi «Leggi le statistiche».</p>
+      <div class="gsteps">
+        <div class="gstep"><div class="gmin"><i aria-hidden="true">🔍</i><b>25'–30'</b></div><div><b>La prima lettura vera</b>Ci sono abbastanza azioni per capire se pressa, se lancia lungo o se entra duro.</div></div>
+        <div class="gstep key"><div class="gmin"><i aria-hidden="true">☕</i><b>45'</b></div><div><b>Intervallo<span class="gtag">la più importante</span></b>Hai tempo di cambiare con calma, senza perdere azioni.</div></div>
+        <div class="gstep"><div class="gmin"><i aria-hidden="true">🔄</i><b>65'–70'</b></div><div><b>Solo se è cambiato qualcosa</b>È passato in vantaggio, ha cambiato modulo o gioca in modo diverso.</div></div>
+        <div class="gstep off"><div class="gmin"><i aria-hidden="true">🚫</i><b>75'+</b></div><div><b>Non serve più</b>I numeri nuovi sono pochi: conta il punteggio.</div></div>
+      </div>
+    </section>
+
+    <section class="gsec">
+      <h3><span class="ge" aria-hidden="true">⚡</span>Subito, quando succede</h3>
+      <p>Niente statistiche: basta un tocco.</p>
+      <div class="gtiles">
+        <div class="gtile"><span aria-hidden="true">⚽</span><b>Gol</b>Aggiorna il punteggio: è ciò che cambia di più le tattiche.<small>barra in basso</small></div>
+        <div class="gtile"><span aria-hidden="true">🟥</span><b>Espulsione</b>Segna chi è uscito, tuo o suo.<small>Partita → Espulsioni</small></div>
+        <div class="gtile"><span aria-hidden="true">🟨</span><b>Giallo</b>A un tuo difensore o centrocampista: gli evito i contrasti.<small>Partita → Cartellini gialli</small></div>
+        <div class="gtile"><span aria-hidden="true">🔀</span><b>Cambia modulo</b>Aggiorna il suo modulo.<small>Prepara → Moduli</small></div>
+      </div>
+    </section>
+
+    <div class="gsum"><span aria-hidden="true">🎯</span><div><b>In breve:</b> preparazione accurata prima, una lettura a metà primo tempo, una all'intervallo. Il resto solo con gol, cartellini e cambi di modulo.</div></div>
+    <button class="cta gok" data-act="guideclose">Ho capito 👍</button>
+  </div>
+</div>
+<div class="dock">
+<nav class="tabbar">
+  <a href="#modulo" id="tab-modulo"><span aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="3"/><path d="M9 4.5h6M9 11h6M9 15h4"/></svg></span>Prepara</a>
+  <a href="#partita" id="tab-partita"><span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M10.2 8.6v6.8l5.4-3.4z"/></svg></span>Partita</a>
+  <a href="#counter" id="tab-counter" class="xp"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 9h13l-3.5-3.5M19 15H6l3.5 3.5"/></svg></span>Counter</a>
+</nav>
+</div>
+<script src="data.js"></script>
+<script src="engine.js"></script>
+<script src="live.js"></script>
+<script src="views.js"></script>
+<script src="cloud.js"></script>
+<script src="drag.js"></script>
+<script src="app.js"></script>
+<script>if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));</script>
+</body>
+</html>

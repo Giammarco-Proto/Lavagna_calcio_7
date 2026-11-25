@@ -1,0 +1,211 @@
+/* Tema: strato di colori e componenti (nero/oro e avorio/oro) che si applica sopra styles.css. Va caricato dopo. */
+/* =====================================================================
+   PREMIUM · nero e oro (scuro) · avorio e oro (chiaro)
+   Un solo elemento forte: la lavagna scura con il gesso dorato e i magneti avorio.
+   Tutto il resto è quieto: superfici morbide, bordi sottili, oro solo dove si agisce.
+   ===================================================================== */
+:root{
+  --bg:#f5f0e4; --surface:#fffdf7; --sunk:#eee6d3; --line:#dccfb3; --ink:#1c1810; --muted:#675e4c;
+  --accent:#8a6420; --accent-ink:#fff8e8; --gold-hi:#f0d99f; --gold-a:#d6b25f; --gold-b:#a97f2c; --on-gold:#1a1206;
+  --pitch:#1b1b1f; --turf-a:#16161a; --turf-b:#1b1b20; --chalk:rgba(214,176,98,.62);
+  --mag:#f6f1e4; --mag-ink:#1c1810; --mag-muted:#6a6252; --mine:#2f9e68; --opp:#b83a52; --card:#e8c04a;
+  --good:#1d7a47; --good-bg:#e1efe0; --bad:#b03a28; --bad-bg:#f6e1da; --warn:#8a5a00; --warn-bg:#f4e7c8; --idle:#8a8372; --idle-bg:#e9e3d3;
+  --r-lg:20px; --r-md:14px; --r-sm:9px;
+  --shadow:0 1px 0 rgba(255,255,255,.75) inset,0 10px 26px rgba(70,48,8,.08);
+  --glass:rgba(255,253,247,.86);
+  --gold-fill:linear-gradient(180deg,var(--gold-hi) 0%,var(--gold-a) 55%,var(--gold-b) 100%);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --bg:#09090b; --surface:#151519; --sunk:#0f0f12; --line:#2b2b32; --ink:#f4efe3; --muted:#a8a193;
+    --accent:#d9b66f; --accent-ink:#17120a; --gold-hi:#f4dfa8; --gold-a:#dcb961; --gold-b:#b58b3a;
+    --pitch:#1b1b1f; --turf-a:#16161a; --turf-b:#1b1b20; --chalk:rgba(214,176,98,.62); --mag:#f2ecdd; --mine:#2f9e68; --opp:#c0415a;
+    --good:#7fd6a0; --good-bg:#14281d; --bad:#f08a76; --bad-bg:#2f1914; --warn:#e9bd5c; --warn-bg:#2d2411; --idle:#8a8577; --idle-bg:#1e1e22;
+    --shadow:0 1px 0 rgba(255,255,255,.05) inset,0 12px 30px rgba(0,0,0,.5);
+    --glass:rgba(16,16,19,.84);}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#09090b; --surface:#151519; --sunk:#0f0f12; --line:#2b2b32; --ink:#f4efe3; --muted:#a8a193;
+  --accent:#d9b66f; --accent-ink:#17120a; --gold-hi:#f4dfa8; --gold-a:#dcb961; --gold-b:#b58b3a;
+  --pitch:#1b1b1f; --turf-a:#16161a; --turf-b:#1b1b20; --chalk:rgba(214,176,98,.62); --mag:#f2ecdd; --mine:#2f9e68; --opp:#c0415a;
+  --good:#7fd6a0; --good-bg:#14281d; --bad:#f08a76; --bad-bg:#2f1914; --warn:#e9bd5c; --warn-bg:#2d2411; --idle:#8a8577; --idle-bg:#1e1e22;
+  --shadow:0 1px 0 rgba(255,255,255,.05) inset,0 12px 30px rgba(0,0,0,.5);
+  --glass:rgba(16,16,19,.84);}
+
+body{background-color:var(--bg);background-image:radial-gradient(820px 380px at 50% -140px,color-mix(in srgb,var(--gold-a) 16%,transparent),transparent 72%);background-repeat:no-repeat;background-attachment:fixed}
+/* barra in alto: sempre scura, titolo dorato con le lettere larghe */
+.appbar{background:linear-gradient(180deg,#1b1b20 0%,#0c0c0f 100%);color:#f4efe3;border-bottom:1px solid rgba(214,176,98,.5);box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.appbar b{font-size:15px;font-stretch:100%;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-hi)}
+.appbar span{opacity:.9}
+.ab{background:rgba(214,176,98,.13);box-shadow:inset 0 0 0 1px rgba(214,176,98,.4);color:var(--gold-hi)}
+.ab .abv{color:var(--gold-hi)}
+.abreset,.mode,.help{border-color:rgba(214,176,98,.55);color:#f4efe3}
+.abreset{background:rgba(214,176,98,.1)}
+.abreset:active{background:rgba(214,176,98,.28)}
+.abreset.armed{background:var(--card);border-color:var(--card);color:#3a2a00}
+.absub em.me{color:var(--gold-hi)}
+/* superfici: morbide, con un filo di luce */
+details.acc,details.sub,.card,.tips,.role,.oddsbox,.risk{box-shadow:var(--shadow)}
+details.acc,details.sub,.card{border-color:var(--line)}
+details.acc{border-radius:var(--r-lg)}
+.hero{box-shadow:0 0 0 1px color-mix(in srgb,var(--gold-a) 45%,transparent),var(--shadow);border-color:var(--gold-a)}
+/* oro dove si agisce */
+.cta,.choose[aria-pressed="true"],.pill[aria-pressed="true"],.segb[aria-pressed="true"],.hero-h .choose[aria-pressed="true"]{
+  background:var(--gold-fill);color:var(--on-gold);border-color:var(--gold-b);text-shadow:0 1px 0 rgba(255,255,255,.35)}
+.cta{border:1px solid var(--gold-b);box-shadow:0 6px 16px color-mix(in srgb,var(--gold-b) 34%,transparent),inset 0 1px 0 rgba(255,255,255,.55);letter-spacing:.01em}
+.cta:active{transform:translateY(1px)}
+details.acc[open] .num{background:var(--gold-fill);color:var(--on-gold);box-shadow:none}
+.num{box-shadow:inset 0 0 0 2px var(--accent)}
+.homehd .swap,.sthead .swap{border-color:color-mix(in srgb,var(--gold-a) 60%,var(--line));color:var(--accent)}
+.mbtn[aria-pressed="true"]{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--gold-a)}
+/* barra in basso: vetro */
+.tabbar{background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);box-shadow:0 -1px 0 color-mix(in srgb,var(--gold-a) 35%,var(--line)),0 -10px 24px rgba(0,0,0,.12)}
+.tabbar a[aria-current="page"]::before{background:var(--gold-fill);height:3px;left:30%;right:30%;box-shadow:0 0 10px color-mix(in srgb,var(--gold-a) 70%,transparent)}
+/* la lavagna: ardesia con gesso dorato e magneti avorio */
+.pitch,.lpitch{
+  background:repeating-linear-gradient(180deg,var(--turf-a) 0 38px,var(--turf-b) 38px 76px);
+  box-shadow:inset 0 0 0 1px rgba(214,176,98,.55),inset 0 0 0 6px var(--turf-b),inset 0 0 60px rgba(0,0,0,.45),0 12px 26px rgba(0,0,0,.28)}
+.ls,.oslot{box-shadow:0 0 0 1px rgba(214,176,98,.6),0 8px 16px rgba(0,0,0,.4)}
+.ls.ch{box-shadow:0 0 0 3px var(--card),0 8px 16px rgba(0,0,0,.4)}
+.pitch span{box-shadow:0 0 0 1px rgba(214,176,98,.6),0 8px 16px rgba(0,0,0,.4)}
+/* in Partita: il pannello fisso in alto */
+.scorebar{background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--gold-a) 40%,var(--line))}
+.stp{background:var(--sunk)}
+.toast{border-left-color:var(--gold-a)}
+/* moduli consigliati: righe per numero di difensori, cerchi d'oro. 100 più chiaro · 90-95 oro · sotto 90 lo stesso oro molto attenuato */
+.mrows{display:flex;flex-direction:column;gap:12px}
+.mrow{display:flex;flex-direction:column;gap:6px}
+.mlab{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.mline{display:flex;flex-wrap:wrap;gap:8px}
+.mcir{width:64px;height:64px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0;border:2px solid var(--gold-a);font:inherit;cursor:pointer;transition:transform .12s}
+.mcir b{font-size:12.5px;font-weight:750;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.mcir span{font-size:18px;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
+.mcir i{font-style:normal;font-size:8.5px;font-weight:700;min-height:9px;line-height:1;letter-spacing:.02em}
+.mcir.g{background:var(--gold-fill);border-color:var(--gold-hi);color:var(--on-gold);box-shadow:0 0 0 1px color-mix(in srgb,var(--gold-b) 60%,transparent),0 8px 20px color-mix(in srgb,var(--gold-a) 42%,transparent),inset 0 1px 0 rgba(255,255,255,.6)}
+.mcir.g span,.mcir.g i{color:var(--on-gold)}
+.mcir.o{background:color-mix(in srgb,var(--gold-a) 24%,var(--surface));border-color:var(--gold-a);color:var(--ink)}
+.mcir.o span{color:var(--accent)}
+.mcir.o i{color:var(--muted)}
+.mcir.r{background:color-mix(in srgb,var(--gold-a) 6%,var(--surface));border-color:color-mix(in srgb,var(--gold-a) 26%,var(--line));color:var(--muted)}
+.mcir.r span{color:color-mix(in srgb,var(--accent) 52%,var(--muted))}
+.mcir.r i{color:var(--muted)}
+.mcir[aria-pressed="true"]{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
+.mcir.g[aria-pressed="true"]{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--gold-b),0 8px 20px color-mix(in srgb,var(--gold-a) 42%,transparent)}
+.mcir:active{transform:scale(.96)}
+.lg.g{background:var(--gold-fill);border-color:var(--gold-hi);color:var(--on-gold)}
+.lg.o{background:color-mix(in srgb,var(--gold-a) 24%,var(--surface));border-color:var(--gold-a);color:var(--ink)}
+.lg.r{background:color-mix(in srgb,var(--gold-a) 6%,var(--surface));border-color:color-mix(in srgb,var(--gold-a) 26%,var(--line));color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.mcir{transition:none}.mcir:active{transform:none}}
+@media (prefers-reduced-motion:reduce){.cta:active{transform:none}}
+.livenote{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px}
+/* Barra schede: nera con tasselli tondeggianti, quello attivo in oro (sempre scura, anche nel tema chiaro) */
+.dock{background:#0c0c0f}
+.dock .tabbar{background:linear-gradient(180deg,#17171b,#0c0c0f);-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:24px 24px 0 0;box-shadow:0 -1px 0 rgba(214,176,98,.45),0 -10px 26px rgba(0,0,0,.28);padding:10px 14px calc(14px + env(safe-area-inset-bottom));gap:8px}
+.dock .tabbar a{flex:1;padding:0;gap:5px;font-size:12px;font-weight:600;color:rgba(236,228,208,.62);background:none;border-radius:0}
+.dock .tabbar a::before{display:none!important}
+.dock .tabbar a span{width:48px;height:48px;margin:0;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(214,176,98,.25)}
+.dock .tabbar a svg{width:24px;height:24px;fill:none;stroke:#d6b062;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dock .tabbar a[aria-current="page"]{color:#f0d58a;background:none}
+.dock .tabbar a[aria-current="page"] span{background:linear-gradient(145deg,#f3dc9a,#c99a3e);box-shadow:0 6px 16px rgba(201,154,62,.4),inset 0 1px 0 rgba(255,255,255,.5)}
+.dock .tabbar a[aria-current="page"] svg{stroke:#17120a}
+/* ===== Componenti dal kit di design: pillole oro/vetro, tondini, cursore, campi con luce oro ===== */
+details.acc,.card,details.sub,.oddsbox,.tips{border-color:color-mix(in srgb,var(--gold-a) 24%,var(--line))}
+.pill{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 90%,#fff),var(--surface));border-color:color-mix(in srgb,var(--gold-a) 34%,var(--line));box-shadow:0 2px 8px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.12)}
+.pill[aria-pressed="true"],.cta,.segb[aria-pressed="true"]{box-shadow:0 6px 16px color-mix(in srgb,var(--gold-b) 38%,transparent),inset 0 1px 0 rgba(255,255,255,.6)}
+.seg{border-radius:999px;padding:5px;background:linear-gradient(180deg,var(--sunk),color-mix(in srgb,var(--sunk) 80%,#000));box-shadow:inset 0 2px 6px rgba(0,0,0,.28),0 0 0 1px color-mix(in srgb,var(--gold-a) 30%,var(--line))}
+.segb{border-radius:999px}
+.stp{border-radius:999px;padding:0 4px;height:46px;border-color:color-mix(in srgb,var(--gold-a) 30%,var(--line));box-shadow:inset 0 2px 5px rgba(0,0,0,.22)}
+.stp button{width:36px;height:36px;border-radius:50%;padding:0;line-height:1;background:color-mix(in srgb,var(--gold-a) 14%,var(--surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold-a) 55%,transparent)}
+.stp button:active{transform:scale(.92)}
+input,textarea,.selbox select,select#opp,select#mine{border-radius:12px;border-color:color-mix(in srgb,var(--gold-a) 26%,var(--line));box-shadow:inset 0 2px 5px rgba(0,0,0,.2)}
+.ovrin input,.oddsrow input{border-radius:12px}
+input:focus,input:focus-visible,textarea:focus-visible,.selbox select:focus-visible,.ovrin input:focus,.oddsrow input:focus{outline:0;border-color:var(--gold-a);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold-a) 32%,transparent),inset 0 2px 5px rgba(0,0,0,.2)}
+.help{width:30px;height:30px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;background:rgba(214,176,98,.1)}
+.abreset{border-radius:16px}
+/* cursore: traccia oro, pallino oro */
+input[type=range]{-webkit-appearance:none;appearance:none;height:26px;background:transparent;box-shadow:none}
+input[type=range]::-webkit-slider-runnable-track{height:7px;border-radius:99px;background:linear-gradient(90deg,var(--gold-b),var(--gold-hi));box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-9.5px;border-radius:50%;background:var(--gold-fill);border:2px solid var(--surface);box-shadow:0 0 0 1px var(--gold-b),0 4px 10px rgba(0,0,0,.4)}
+input[type=range]::-moz-range-track{height:7px;border-radius:99px;background:linear-gradient(90deg,var(--gold-b),var(--gold-hi))}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--gold-fill);border:2px solid var(--surface);box-shadow:0 0 0 1px var(--gold-b)}
+.abmid{gap:4px}.abmid .abreset{min-width:48px;padding:4px 5px}
+.abr1{gap:6px;grid-template-columns:auto 1fr auto}.abr1 .abmid{justify-self:center}
+.appbar{padding-left:12px;padding-right:12px}.abr1>b{letter-spacing:.2em}
+/* testi lunghi dietro «Info» */
+details.more{margin:2px 0}
+details.more>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;color:var(--accent);padding:3px 11px 3px 4px;border-radius:99px;border:1px solid color-mix(in srgb,var(--gold-a) 35%,var(--line));background:color-mix(in srgb,var(--gold-a) 8%,transparent)}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::before{content:"i";width:17px;height:17px;border-radius:50%;display:inline-grid;place-items:center;font:italic 700 11px/1 Georgia,serif;background:var(--gold-fill);color:var(--on-gold)}
+details.more[open]>summary{margin-bottom:6px}
+.rednote{flex-wrap:wrap}.rednote details.more[open]{flex-basis:100%}
+.hint{display:block;font-size:12.5px;color:var(--muted);font-weight:500}
+.legrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0}
+/* Previsione (Partita): vittoria verde · pareggio avorio · sconfitta rosso */
+.prev{margin-top:7px}
+.pvrow{display:flex;align-items:center;gap:9px}
+.pvt{font-size:12px;font-weight:700;color:var(--gold-hi,#e6c97d);letter-spacing:.03em}
+.pvbar{flex:1;display:flex;height:9px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.1);gap:2px}
+.pvbar i{display:block;height:100%;min-width:0;transition:width .35s ease}
+.pvbar .w,.pvk .w i{background:#3fbf7f}.pvbar .d,.pvk .d i{background:#ece4d0}.pvbar .l,.pvk .l i{background:#e0556b}
+.pvk{display:flex;justify-content:space-between;gap:6px;margin-top:5px;font-size:12px;color:rgba(255,255,255,.82);white-space:nowrap}
+.pvk span{display:inline-flex;align-items:center;gap:5px}
+.pvk i{width:9px;height:9px;border-radius:50%;flex:none}
+.pvk b{font-size:13px;font-weight:800;letter-spacing:0;text-transform:none;font-stretch:100%;font-variant-numeric:tabular-nums;color:#fff}
+.pvk span{flex:1;justify-content:center;gap:4px}
+.pvk span:first-child{justify-content:flex-start}.pvk span:last-child{justify-content:flex-end}
+/* Info unica per scheda, in basso a sinistra */
+.folded{display:none!important}
+.viewinfo{align-self:flex-start;margin:10px 0 4px}
+.viewinfo>p.vi{margin:0 0 12px;font-size:13px;line-height:1.45;color:var(--muted);max-width:60ch}
+.viewinfo[open]{width:100%}
+/* Preparazione in alto a destra: finestra con l'elenco dei pesi; titolo a sinistra */
+.abpop{max-height:min(72vh,560px);overflow-y:auto}
+.abw{border-top:1px solid var(--line);padding-top:6px}
+.abwh{margin:0 0 4px;font-size:12.5px;color:var(--muted)}
+.abr1>b{font-size:13px;letter-spacing:.14em;white-space:nowrap}
+.ab small{text-transform:uppercase;letter-spacing:.06em;font-size:10px}
+/* nomi delle schede in maiuscolo */
+.dock .tabbar a{text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:700}
+/* Tasto INVIA in alto: oro pieno come i moduli consigliati a 100 */
+.abinvia{border:1px solid var(--gold-hi);border-radius:999px;padding:5px 16px;min-height:32px;font:inherit;font-size:13px;font-weight:800;letter-spacing:.14em;cursor:pointer;background:var(--gold-fill);color:var(--on-gold);text-shadow:0 1px 0 rgba(255,255,255,.35);box-shadow:0 0 0 1px color-mix(in srgb,var(--gold-b) 60%,transparent),0 6px 16px color-mix(in srgb,var(--gold-a) 42%,transparent),inset 0 1px 0 rgba(255,255,255,.6)}
+.abinvia:active{transform:translateY(1px)}
+.abnums{align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.abr2 .absub{flex:1 1 100px}
+/* «LA PARTITA È FINITA»: maiuscolo e al centro */
+.sendbox{text-align:center}
+.sendbox .bar{justify-content:center}
+.sendbox .pill{text-transform:uppercase;letter-spacing:.1em;font-weight:800;padding-left:22px;padding-right:22px}
+/* stelle sempre visibili sotto il ruolo, anche con 3★ */
+.ls em.lvb,.oslot em.lvb{font-size:11.5px;color:var(--mag-ink);opacity:.75}
+.ls em.lvb.F,.oslot em.lvb.F,.ls em.lvb.D,.oslot em.lvb.D{opacity:1}
+/* RESET e INVIA: stessa pillola dorata, piccola, al centro. «Quando» è un pallino a destra come tema e «?» */
+.abpill{border:1px solid var(--gold-hi);border-radius:999px;padding:3px 11px;min-height:26px;font:inherit;font-size:11px;font-weight:800;letter-spacing:.1em;cursor:pointer;background:var(--gold-fill);color:var(--on-gold);text-shadow:0 1px 0 rgba(255,255,255,.35);box-shadow:0 0 0 1px color-mix(in srgb,var(--gold-b) 60%,transparent),0 4px 12px color-mix(in srgb,var(--gold-a) 38%,transparent),inset 0 1px 0 rgba(255,255,255,.6);white-space:nowrap}
+.abpill:active{transform:translateY(1px)}
+.abpill.armed{background:linear-gradient(180deg,#ffd9a0,#e08a2c);border-color:#ffd9a0}
+.abmid{display:flex;gap:6px;align-items:center}
+.abr1>b{font-size:12px;letter-spacing:.1em}
+.abrow{display:flex;gap:4px;align-items:center}
+.abrow .help{width:28px;height:28px;font-size:13px}
+/* stelline vere sotto il ruolo */
+.ls em.lvb,.oslot em.lvb{font-size:11px;line-height:1.1;opacity:1}
+.lvb .stl{color:#b8860b;letter-spacing:.5px;font-size:12px}
+.oslot[aria-pressed="true"] em.lvb .stl{color:#ffd45e}
+.lvb .stl{color:#b8860b!important;font-size:12px!important;letter-spacing:.5px!important;font-weight:400!important}
+.oslot[aria-pressed="true"] .lvb .stl{color:#ffd45e!important}
+/* RESET e INVIA staccati dal centro; INVIA più grande; titolo su due righe per fare spazio */
+.abr1>b{line-height:1.15;letter-spacing:.14em;font-size:12px}
+.abr1 .abmid{justify-self:stretch;justify-content:space-around;gap:0;width:100%}
+.abpill.abbig{font-size:14px;padding:6px 20px;min-height:36px;letter-spacing:.14em}
+/* «LA PARTITA È FINITA»: pulsante dorato, scritta sempre nera (✓ quando è attivo) */
+.sendbox .pill,.sendbox .pill[aria-pressed="true"],.sendbox .pill[aria-pressed="false"]{background:var(--gold-fill)!important;color:#000!important;border-color:var(--gold-hi)!important;text-shadow:none!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--gold-b) 60%,transparent),0 6px 16px color-mix(in srgb,var(--gold-a) 38%,transparent),inset 0 1px 0 rgba(255,255,255,.6)}
+.sendbox .pill[aria-pressed="true"]::before{content:"✓ "}
+.abr1{gap:4px}
+.abpill.abbig{font-size:13px;padding:5px 14px;min-height:34px;letter-spacing:.12em}
+.abmid .abpill:not(.abbig){padding:3px 9px}
+.abr1 .abmid{padding:0 6px;box-sizing:border-box}
+/* più aria tra RESET e INVIA: ai due lati della fascia centrale */
+.abr1 .abmid{justify-content:space-between;padding:0;margin:0 2px}
+.abmid .abpill:not(.abbig){font-size:10.5px;padding:3px 8px;letter-spacing:.08em}
+.abrow{gap:3px}.abrow .help{width:26px;height:26px}
+.abr1 .abmid{justify-self:stretch!important;width:auto!important;margin:0 10px!important;min-width:0}
+.appbar>div.abr1{grid-template-columns:auto 1fr auto}
